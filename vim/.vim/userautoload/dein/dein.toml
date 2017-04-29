@@ -1,0 +1,100 @@
+# プラグインマネージャ
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+
+# インデントのカラーを変更
+[[plugins]]
+repo = 'nathanaelkane/vim-indent-guides'
+hook_add = '''
+  let g:indent_guides_enable_on_vim_startup=1
+   " ガイドをスタートするインデントの量
+   let g:indent_guides_start_level=1
+   " 自動カラーを無効にする
+   let g:indent_guides_auto_colors=0
+   " 奇数インデントのカラー
+   autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd guibg=#444433 ctermbg=236
+   " 偶数インデントのカラー
+   autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=#333344 ctermbg=238
+   " ハイライト色の変化の幅
+   let g:indent_guides_color_change_percent = 30
+   " ガイドの幅
+   let g:indent_guides_guide_size = 1
+'''
+
+# syntastic check
+[[plugins]]
+repo = 'vim-syntastic/syntastic'
+hook_add = '''
+  let g:syntastic_enable_signs=1
+  let g:syntastic_auto_loc_list=2
+  let g:syntastic_mode_map = {'mode': 'passive'} 
+  augroup AutoSyntastic
+      autocmd!
+      autocmd InsertLeave,TextChanged * call s:syntastic() 
+  augroup END
+  function! s:syntastic()
+      w
+      SyntasticCheck
+  endfunction
+'''
+
+# 括弧等の補完
+[[plugins]]
+repo = 'Townk/vim-autoclose'
+
+# コメントアウト
+[[plugins]]
+repo = 'tyru/caw.vim'
+hook_add = '''
+  nmap <C-o> <Plug>(caw:hatpos:toggle)
+  vmap <C-o> <Plug>(caw:hatpos:toggle) "
+'''
+
+# 自動補完
+[[plugins]]
+repo = 'Shougo/neocomplcache'
+hook_add = '''
+  " Disable AutoComplPop.
+  let g:acp_enableAtStartup = 0
+  " Use neocomplcache.
+  let g:neocomplcache_enable_at_startup = 1
+  " Use smartcase.
+  let g:neocomplcache_enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplcache_min_syntax_length = 3
+  let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+
+  " Define dictionary.
+  let g:neocomplcache_dictionary_filetype_lists = {
+      \ 'default' : ''
+      \ }
+
+  " Plugin key-mappings.
+  inoremap <expr><C-g>     neocomplcache#undo_completion()
+  inoremap <expr><C-l>     neocomplcache#complete_common_string()
+
+  " Recommended key-mappings.
+  " <CR>: close popup and save indent.
+  inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+  function! s:my_cr_function()
+    return neocomplcache#smart_close_popup() . "\<CR>"
+    complcache_enable_at_startup
+  endfunction
+  " <TAB>: completion.
+  inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+  inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
+  " <C-h>, <BS>: close popup and delete backword char.
+  inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+  inoremap <expr><C-y>  neocomplcache#close_popup()
+  inoremap <expr><C-e>  neocomplcache#cancel_popup()
+
+  hi Pmenu ctermbg=4
+  hi PmenuSel ctermbg=1
+  hi PMenuSbar ctermbg=4
+
+  "辞書ファイル
+  autocmd BufRead *.php\|*.ctp\|*.tpl :set dictionary=~/.vim/dictionaries/php.dict filetype=php
+'''
+

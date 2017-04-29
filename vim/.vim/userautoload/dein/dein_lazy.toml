@@ -1,0 +1,11 @@
+[[plugins]]
+repo = 'vim-jp/cpp-vim'
+on_ft = 'cpp'
+
+[[plugins]]
+repo = 'Shougo/neocomplete.vim'
+on_ft = 'cpp'
+
+[[plugins]] # Toml
+repo  = 'cespare/vim-toml'
+on_ft = 'toml'
