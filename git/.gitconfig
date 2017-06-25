@@ -1,5 +1,5 @@
 [user]
-    name = kohyamam
+    name = bossagyu
     email = feel-the-wind.sakura@hotmail.co.jp
 [core]
     pager = less -R
@@ -12,3 +12,4 @@
     br = branch
 [core]
     ui = true
+	editor = vim
