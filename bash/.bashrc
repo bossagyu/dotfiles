@@ -17,6 +17,7 @@ alias vb="vim ~/.bashrc;source ~/.bashrc"
 alias ll="ls -l"
 alias suvim="sudo vim -u ~/.vimrc"
 alias ssh="ssh -A"
+alias tmux="tmux -2"
 
 # ssh 時に新規ウィンドウを作る
 #
