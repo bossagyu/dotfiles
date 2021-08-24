@@ -124,3 +124,11 @@ function fssh() {
     print -z ssh "$host"
   fi
 }
+
+# fzfを利用したコマンドを表示する
+function fzf_commands() {
+    echo hd   履歴から移動
+    echo fbr  ブランチの切り替え
+    echo fco  タグ・リモートブランチを含めてチェックアウト
+    echo fssh 履歴からsshする
+}
