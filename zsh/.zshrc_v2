@@ -1,7 +1,7 @@
 #fzfを読み込む
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -57,17 +57,28 @@ zinit light zsh-users/zsh-autosuggestions
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=244"
 
 ## 履歴保存管理
-HISTFILE=$ZDOTDIR/.zsh-history
-HISTSIZE=100000
-SAVEHIST=1000000
+export HISTFILE=$HOME/.zsh_history
+export HISTSIZE=100000        # メモリ上の履歴リストに保存されるイベントの最大数
+export SAVEHIST=1000000        # 履歴ファイルに保存されるイベントの最大数
 
-## 他のzshと履歴を共有
-setopt inc_append_history
-setopt share_history
+setopt hist_expire_dups_first # 履歴を切り詰める際に、重複する最も古いイベントから消す
+setopt hist_ignore_all_dups   # 履歴が重複した場合に古い履歴を削除する
+setopt hist_ignore_dups       # 前回のイベントと重複する場合、履歴に保存しない
+setopt hist_save_no_dups      # 履歴ファイルに書き出す際、新しいコマンドと重複する古いコマンドは切り捨てる
+setopt share_history          # 全てのセッションで履歴を共有する
+
+
+## Git補完
+fpath=(
+  ${HOME}/.zsh/completions
+  ${fpath}
+)
+autoload -Uz compinit
+compinit
 
 #-------------alias--------------------
-alias ls="ls -CF"
-alias ll="ls -l"
+alias ls="ls -GCF"
+alias ll="ls -Gl"
 alias suvim="sudo vim -u ~/.vimrc"
 alias ssh="ssh -A"
 alias tmux="tmux -2"
@@ -85,7 +96,7 @@ function fzf-history-widget() {
     BUFFER=$( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) |
         sed 's/ *[0-9]*\** *//' |
         eval $tac | awk '!a[$0]++' |
-        fzf --prompt="History> " +s)
+        fzf --exact --prompt="History> " +s)
     CURSOR=$#BUFFER
 }
 zle     -N   fzf-history-widget
